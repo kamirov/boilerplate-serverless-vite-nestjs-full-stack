@@ -1,0 +1,19 @@
+{
+  "folders": [
+    {
+      "name": "✨ root",
+      "path": "."
+    },
+    {
+      "name": "🖥️ ui-web",
+      "path": "/apps/ui-web"
+    },
+    {
+      "name": "🩺 api-core",
+      "path": "/apps/api-core"
+    }
+  ],
+  "settings": {
+    "jest.disabledWorkspaceFolders": ["✨ root"]
+  }
+}
