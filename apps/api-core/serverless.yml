@@ -1,0 +1,48 @@
+service: api-core
+
+provider:
+  name: aws
+  runtime: nodejs22.x
+  region: us-east-1
+  stage: ${opt:stage, 'dev'}
+  environment:
+    STAGE: ${self:provider.stage}
+    NODE_ENV: ${self:provider.stage}
+    # Database configuration
+    DB_HOST: ${env:DB_HOST}
+    DB_PORT: ${env:DB_PORT}
+    DB_USERNAME: ${env:DB_USERNAME}
+    DB_PASSWORD: ${env:DB_PASSWORD}
+    DB_DATABASE: ${env:DB_DATABASE}
+    # Other environment variables
+    JWT_SECRET: ${env:JWT_SECRET}
+    API_KEY: ${env:API_KEY}
+
+plugins:
+  - serverless-offline
+  - serverless-plugin-typescript
+
+custom:
+  serverless-offline:
+    httpPort: 3001
+    noPrependStageInUrl: true
+    useChildProcesses: true
+
+functions:
+  api:
+    handler: src/lambda.handler
+    events:
+      - http:
+          path: /{proxy+}
+          method: ANY
+          cors: true
+    environment:
+      NODE_ENV: ${self:provider.stage}
+    timeout: 30
+    memorySize: 512
+
+resources:
+  Resources:
+    # Add any AWS resources here if needed
+    # For example, RDS instance, S3 buckets, etc.
+    pass 

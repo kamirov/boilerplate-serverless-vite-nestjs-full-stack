@@ -1,0 +1,165 @@
+name: Test, Build and Deploy API Core
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'apps/api-core/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'apps/api-core/**'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: api_core_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js 22
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+        cache-dependency-path: apps/api-core/package-lock.json
+    
+    - name: Install dependencies
+      run: |
+        cd apps/api-core
+        npm ci
+    
+    - name: Run tests
+      run: |
+        cd apps/api-core
+        npm run test:cov
+      env:
+        DB_HOST: localhost
+        DB_PORT: 5432
+        DB_USERNAME: postgres
+        DB_PASSWORD: password
+        DB_DATABASE: api_core_test
+        JWT_SECRET: test-secret
+        API_KEY: test-api-key
+        NODE_ENV: test
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js 22
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+        cache-dependency-path: apps/api-core/package-lock.json
+    
+    - name: Install dependencies
+      run: |
+        cd apps/api-core
+        npm ci
+    
+    - name: Build application
+      run: |
+        cd apps/api-core
+        npm run build
+
+  deploy-dev:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/develop'
+    environment: development
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js 22
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+        cache-dependency-path: apps/api-core/package-lock.json
+    
+    - name: Install dependencies
+      run: |
+        cd apps/api-core
+        npm ci
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+    
+    - name: Deploy to development
+      run: |
+        cd apps/api-core
+        npm run deploy
+      env:
+        DB_HOST: ${{ secrets.DB_HOST_DEV }}
+        DB_PORT: ${{ secrets.DB_PORT_DEV }}
+        DB_USERNAME: ${{ secrets.DB_USERNAME_DEV }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD_DEV }}
+        DB_DATABASE: ${{ secrets.DB_DATABASE_DEV }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET_DEV }}
+        API_KEY: ${{ secrets.API_KEY_DEV }}
+
+  deploy-prod:
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup Node.js 22
+      uses: actions/setup-node@v4
+      with:
+        node-version: '22'
+        cache: 'npm'
+        cache-dependency-path: apps/api-core/package-lock.json
+    
+    - name: Install dependencies
+      run: |
+        cd apps/api-core
+        npm ci
+    
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+    
+    - name: Deploy to production
+      run: |
+        cd apps/api-core
+        npm run deploy:prod
+      env:
+        DB_HOST: ${{ secrets.DB_HOST_PROD }}
+        DB_PORT: ${{ secrets.DB_PORT_PROD }}
+        DB_USERNAME: ${{ secrets.DB_USERNAME_PROD }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD_PROD }}
+        DB_DATABASE: ${{ secrets.DB_DATABASE_PROD }}
+        JWT_SECRET: ${{ secrets.JWT_SECRET_PROD }}
+        API_KEY: ${{ secrets.API_KEY_PROD }} 
