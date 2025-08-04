@@ -1,0 +1,128 @@
+service: ui-web
+
+# frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs22.x
+  region: us-east-1
+  stage: ${opt:stage, 'dev'}
+  environment:
+    STAGE: ${self:provider.stage}
+
+plugins:
+  - serverless-offline
+  - serverless-s3-sync
+  - serverless-cloudfront-invalidate
+
+custom:
+  s3Sync:
+    - bucketName: ${self:service}-${self:provider.stage}-static-assets
+      localDir: dist
+      deleteRemoved: true
+      acl: public-read
+      followSymlinks: false
+      defaultContentType: text/html
+      params:
+        - index.html:
+            CacheControl: "no-cache, no-store, must-revalidate"
+        - "*.js":
+            CacheControl: "public, max-age=31536000"
+        - "*.css":
+            CacheControl: "public, max-age=31536000"
+        - "*.png":
+            CacheControl: "public, max-age=31536000"
+        - "*.jpg":
+            CacheControl: "public, max-age=31536000"
+        - "*.ico":
+            CacheControl: "public, max-age=31536000"
+        - "*.svg":
+            CacheControl: "public, max-age=31536000"
+
+  cloudfrontInvalidate:
+    distributionIdKey: CloudFrontDistributionId
+    items:
+      - "/*"
+
+  serverless-offline:
+    httpPort: 3000
+    noPrependStageInUrl: true
+
+functions:
+  serveStatic:
+    handler: handler.serve
+    events:
+      - http:
+          path: /
+          method: get
+      - http:
+          path: /{proxy+}
+          method: get
+
+resources:
+  Resources:
+    S3Bucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: ${self:service}-${self:provider.stage}-static-assets
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: false
+          BlockPublicPolicy: false
+          IgnorePublicAcls: false
+          RestrictPublicBuckets: false
+        CorsConfiguration:
+          CorsRules:
+            - AllowedHeaders: ["*"]
+              AllowedMethods: [GET, HEAD]
+              AllowedOrigins: ["*"]
+              MaxAge: 3000
+
+    S3BucketPolicy:
+      Type: AWS::S3::BucketPolicy
+      Properties:
+        Bucket: !Ref S3Bucket
+        PolicyDocument:
+          Statement:
+            - Sid: PublicReadGetObject
+              Effect: Allow
+              Principal: "*"
+              Action: "s3:GetObject"
+              Resource: !Sub "${S3Bucket}/*"
+
+    CloudFrontDistribution:
+      Type: AWS::CloudFront::Distribution
+      Properties:
+        DistributionConfig:
+          Origins:
+            - DomainName: !GetAtt S3Bucket.RegionalDomainName
+              Id: S3Origin
+              S3OriginConfig:
+                OriginAccessIdentity: ""
+          Enabled: true
+          DefaultRootObject: index.html
+          DefaultCacheBehavior:
+            TargetOriginId: S3Origin
+            ViewerProtocolPolicy: redirect-to-https
+            CachePolicyId: 4135ea2d-6df8-44a3-9df3-4b5a84be39ad # Managed-CachingOptimized
+            OriginRequestPolicyId: 88a5eaf4-2fd4-4709-b370-b4c650ea3fcf # Managed-CORS-S3Origin
+          CustomErrorResponses:
+            - ErrorCode: 404
+              ResponseCode: 200
+              ResponsePagePath: /index.html
+            - ErrorCode: 403
+              ResponseCode: 200
+              ResponsePagePath: /index.html
+
+  Outputs:
+    CloudFrontDistributionId:
+      Value: !Ref CloudFrontDistribution
+      Export:
+        Name: ${self:service}-${self:provider.stage}-CloudFrontDistributionId
+    CloudFrontDomainName:
+      Value: !GetAtt CloudFrontDistribution.DomainName
+      Export:
+        Name: ${self:service}-${self:provider.stage}-CloudFrontDomainName
+    S3BucketName:
+      Value: !Ref S3Bucket
+      Export:
+        Name: ${self:service}-${self:provider.stage}-S3BucketName
