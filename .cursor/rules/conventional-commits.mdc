@@ -1,3 +1,221 @@
+---
+alwaysApply: true
+---
+
+# Conventional Commits and English Language Rule
+
+## Overview
+
+All commits in this repository **MUST** be written in English and follow the Conventional Commits specification. This ensures consistent commit history, automated changelog generation, and semantic versioning.
+
+## Language Requirement
+
+- **All commit messages MUST be in English**
+- No other languages are permitted in commit messages
+- This includes commit titles, descriptions, and any additional notes
+
+## Conventional Commits Format
+
+### Basic Structure
+
+```
+<type>[optional scope]: <description>
+
+[optional body]
+
+[optional footer(s)]
+```
+
+### Commit Types
+
+Use one of the following types:
+
+- **feat**: A new feature
+- **fix**: A bug fix
+- **docs**: Documentation only changes
+- **style**: Changes that do not affect the meaning of the code (white-space, formatting, missing semi-colons, etc)
+- **refactor**: A code change that neither fixes a bug nor adds a feature
+- **perf**: A code change that improves performance
+- **test**: Adding missing tests or correcting existing tests
+- **build**: Changes that affect the build system or external dependencies
+- **ci**: Changes to CI configuration files and scripts
+- **chore**: Other changes that don't modify src or test files
+- **revert**: Reverts a previous commit
+
+### Scope (Optional)
+
+- Use lowercase
+- Should be a noun describing the section of the codebase
+- Examples: `(auth)`, `(api)`, `(ui)`, `(db)`, `(config)`
+
+### Description
+
+- Use imperative mood ("add" not "added" or "adds")
+- Don't capitalize the first letter
+- No period at the end
+- Keep it under 72 characters
+
+## Examples
+
+### ✅ Correct Examples
+
+```
+feat: add user authentication system
+feat(auth): implement JWT token validation
+fix(api): resolve user data fetching issue
+docs: update README with installation steps
+refactor(ui): simplify component structure
+test: add unit tests for user service
+build: update dependencies to latest versions
+ci: add automated testing pipeline
+chore: update gitignore patterns
+revert: revert "feat: add experimental feature"
+```
+
+### ❌ Incorrect Examples
+
+```
+Added new feature
+fixed bug
+Updated documentation
+refactored code
+Added tests
+Updated dependencies
+Fixed the authentication system that was broken
+feat: Add new feature for user management system
+fix: Resolved critical bug in payment processing
+```
+
+## Breaking Changes
+
+### Breaking Change Indicator
+
+Use `!` after the type/scope to indicate breaking changes:
+
+```
+feat!: change authentication API
+feat(auth)!: remove deprecated login method
+```
+
+### Breaking Change Description
+
+In the commit body, describe the breaking change:
+
+```
+feat!: change authentication API
+
+BREAKING CHANGE: The authentication API has been completely refactored.
+The old `login()` method has been replaced with `authenticate()`.
+Migration guide available in docs/migration.md.
+```
+
+## Commit Body
+
+- Use imperative mood
+- Explain what and why vs. how
+- Reference issues when applicable
+- Wrap at 72 characters
+
+## Commit Footer
+
+Use footers for:
+
+- **Breaking Changes**: `BREAKING CHANGE: <description>`
+- **Issue References**: `Closes #123`, `Fixes #456`
+- **Co-authored-by**: `Co-authored-by: Name <email>`
+
+## Multi-line Commits
+
+### Short Description + Body
+
+```
+feat: add user profile management
+
+- Implement user profile CRUD operations
+- Add profile image upload functionality
+- Include profile validation rules
+- Add unit tests for profile service
+
+Closes #123
+```
+
+### Breaking Change Example
+
+```
+feat!: redesign user authentication flow
+
+The authentication system has been completely redesigned for better security
+and user experience. All existing authentication tokens will be invalidated.
+
+BREAKING CHANGE: Authentication tokens issued before this version are no
+longer valid. Users will need to re-authenticate.
+
+Migration guide: docs/auth-migration.md
+Closes #456
+```
+
+## Automated Tools
+
+### Commit Message Validation
+
+Consider using tools like:
+
+- **commitlint**: Validates commit message format
+- **husky**: Git hooks for pre-commit validation
+- **conventional-changelog**: Generates changelogs
+
+### Configuration Example
+
+```json
+{
+  "extends": ["@commitlint/config-conventional"],
+  "rules": {
+    "type-enum": [
+      2,
+      "always",
+      [
+        "feat",
+        "fix",
+        "docs",
+        "style",
+        "refactor",
+        "perf",
+        "test",
+        "build",
+        "ci",
+        "chore",
+        "revert"
+      ]
+    ],
+    "type-case": [2, "always", "lower"],
+    "type-empty": [2, "never"],
+    "subject-case": [2, "always", "lower"],
+    "subject-empty": [2, "never"],
+    "subject-full-stop": [2, "never", "."],
+    "header-max-length": [2, "always", 72]
+  }
+}
+```
+
+## Benefits
+
+- **Automated changelog generation**
+- **Semantic versioning support**
+- **Clear commit history**
+- **Better collaboration**
+- **Automated release notes**
+- **Issue tracking integration**
+
+## Common Mistakes to Avoid
+
+- Using past tense ("added", "fixed")
+- Capitalizing the first letter
+- Adding periods at the end
+- Writing in non-English languages
+- Using vague descriptions
+- Not using the correct type
+- Exceeding 72 characters in the subject line
+
 # Conventional Commits and English Language Rule
 
 ## Overview

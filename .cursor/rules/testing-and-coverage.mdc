@@ -1,3 +1,144 @@
+---
+alwaysApply: true
+---
+
+# Testing and Code Coverage Enforcement Rule
+
+## Overview
+
+All code changes to this repository **MUST** conclude with verification that:
+
+1. All tests are passing
+2. Code coverage has not dropped below established thresholds
+
+## Pre-commit Requirements
+
+### 1. Test Execution
+
+Before committing any code changes, **ALWAYS** run:
+
+```bash
+pnpm test
+```
+
+**Requirements:**
+
+- All tests must pass (exit code 0)
+- No test failures, skipped tests, or pending tests
+- If tests fail, fix the issues before proceeding
+
+### 2. Code Coverage Verification
+
+After running tests, verify code coverage:
+
+```bash
+pnpm test:coverage
+# or
+pnpm test --coverage
+```
+
+**Requirements:**
+
+- Code coverage must meet or exceed existing thresholds
+- **DO NOT** lower coverage thresholds without explicit approval
+- If coverage drops below thresholds, add tests to cover new code paths
+- Coverage reports should be reviewed for any uncovered critical paths
+
+## Coverage Thresholds
+
+- **Maintain existing thresholds** - Do not modify coverage thresholds without team approval
+- **Minimum thresholds** (if not already set):
+  - Statements: 80%
+  - Branches: 70%
+  - Functions: 80%
+  - Lines: 80%
+
+## Testing Best Practices
+
+### New Code Requirements
+
+- **All new functions/methods** must have corresponding tests
+- **All new features** must include integration tests
+- **Bug fixes** must include regression tests
+- **Edge cases** should be covered with appropriate test cases
+
+### Test Quality Standards
+
+- Tests should be **readable** and **maintainable**
+- Use **descriptive test names** that explain the expected behavior
+- Follow **AAA pattern** (Arrange, Act, Assert)
+- Avoid **test interdependence** - each test should be independent
+- Use **meaningful assertions** that verify actual behavior
+
+## Automated Verification
+
+### CI/CD Pipeline
+
+- Ensure CI/CD pipeline includes test execution
+- Configure pipeline to fail if tests fail
+- Configure pipeline to fail if coverage drops below thresholds
+- Include coverage reporting in CI/CD output
+
+### Pre-commit Hooks
+
+Consider implementing pre-commit hooks that:
+
+- Automatically run tests before commit
+- Block commits if tests fail
+- Block commits if coverage drops below thresholds
+
+## Coverage Analysis
+
+### What to Check
+
+- **Overall coverage percentage** - should not decrease
+- **File-level coverage** - new files should meet thresholds
+- **Critical path coverage** - ensure business logic is well-tested
+- **Integration test coverage** - API endpoints, database operations, etc.
+
+### Coverage Gaps
+
+When coverage drops:
+
+1. **Identify uncovered code paths**
+2. **Prioritize critical business logic** for additional testing
+3. **Add unit tests** for uncovered functions
+4. **Add integration tests** for uncovered workflows
+5. **Re-run tests** to verify coverage improvement
+
+## Documentation Requirements
+
+- Update test documentation when adding new test suites
+- Document any test setup requirements
+- Maintain clear instructions for running tests locally
+- Document coverage thresholds and their rationale
+
+## Exceptions
+
+- **Emergency hotfixes** may require temporary coverage exceptions
+- **Document any exceptions** with rationale and timeline for resolution
+- **Plan to address coverage gaps** in subsequent releases
+
+## Tools and Commands
+
+```bash
+# Run all tests
+pnpm test
+
+# Run tests with coverage
+pnpm test:coverage
+
+# Run specific test suites
+pnpm test:unit
+pnpm test:integration
+pnpm test:e2e
+
+# Run tests in watch mode during development
+pnpm test:watch
+
+# Generate coverage report
+pnpm coverage:report
+```
 # Testing and Code Coverage Enforcement Rule
 
 ## Overview
