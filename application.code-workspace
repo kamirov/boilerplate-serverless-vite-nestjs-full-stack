@@ -6,11 +6,11 @@
     },
     {
       "name": "🖥️ ui-web",
-      "path": "/apps/ui-web"
+      "path": "apps/ui-web"
     },
     {
       "name": "🩺 api-core",
-      "path": "/apps/api-core"
+      "path": "apps/api-core"
     }
   ],
   "settings": {
