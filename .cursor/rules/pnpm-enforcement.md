@@ -1,0 +1,55 @@
+# PNPM Enforcement Rule
+
+## Overview
+
+This project **MUST** use pnpm for all package management operations. This includes installing dependencies, running scripts, and managing packages.
+
+## Enforced Commands
+
+- **Install dependencies**: `pnpm install` (never `npm install` or `yarn install`)
+- **Add packages**: `pnpm add <package>` (never `npm install <package>` or `yarn add <package>`)
+- **Remove packages**: `pnpm remove <package>` (never `npm uninstall <package>` or `yarn remove <package>`)
+- **Run scripts**: `pnpm <script-name>` (never `npm run <script-name>` or `yarn <script-name>`)
+- **Update packages**: `pnpm update` (never `npm update` or `yarn upgrade`)
+- **Audit**: `pnpm audit` (never `npm audit` or `yarn audit`)
+
+## Package Lock Files
+
+- **Use**: `pnpm-lock.yaml`
+- **Never use**: `package-lock.json` (npm) or `yarn.lock` (yarn)
+
+## Scripts in package.json
+
+When creating or modifying package.json files, ensure all scripts are designed to work with pnpm:
+
+```json
+{
+  "scripts": {
+    "dev": "pnpm run dev",
+    "build": "pnpm run build",
+    "test": "pnpm run test"
+  }
+}
+```
+
+## CI/CD Considerations
+
+- Always use pnpm in CI/CD pipelines
+- Include `pnpm install` in build steps
+- Use `pnpm ci` for production installs when available
+
+## Migration from other package managers
+
+If migrating from npm or yarn:
+
+1. Delete `package-lock.json` or `yarn.lock`
+2. Run `pnpm install` to generate `pnpm-lock.yaml`
+3. Update all documentation and scripts to use pnpm
+
+## Benefits of pnpm in this project
+
+- Faster installation times
+- Disk space efficiency through symlinks
+- Strict dependency resolution
+- Better monorepo support
+- Consistent dependency tree across environments
