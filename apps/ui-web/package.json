@@ -4,7 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "engines": {
-    "node": ">=22.0.0"
+    "node": ">=22.0.0",
+    "pnpm": ">=8.0.0"
   },
   "scripts": {
     "dev": "vite",
@@ -17,7 +18,7 @@
     "test:watch": "vitest",
     "test:cov": "vitest run --coverage",
     "test:cov:watch": "vitest --coverage",
-    "deploy": "npm run build && serverless deploy"
+    "deploy": "pnpm run build && serverless deploy"
   },
   "dependencies": {
     "aws-sdk": "^2.1692.0",
