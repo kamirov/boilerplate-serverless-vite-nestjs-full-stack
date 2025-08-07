@@ -1,0 +1,365 @@
+# Dependencies
+node_modules/
+*/node_modules/
+**/node_modules/
+
+# Package manager files
+package-lock.json
+yarn.lock
+# Keep pnpm-lock.yaml as it's the preferred package manager for this project
+
+# Build outputs
+dist/
+build/
+*/dist/
+*/build/
+**/dist/
+**/build/
+
+# Coverage reports
+coverage/
+.nyc_output/
+*/coverage/
+**/coverage/
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*/.env
+*/.env.local
+**/.env
+**/.env.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+*/logs/
+**/logs/
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# IDE and Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+.temp/
+
+# Cache directories
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.vuepress/dist/
+.serverless/
+.fusebox/
+.dynamodb/
+
+# TypeScript
+*.tsbuildinfo
+
+# Testing
+.nyc_output/
+coverage/
+
+# Serverless
+.serverless/
+
+# DynamoDB Local
+.dynamodb/
+
+# FuseBox cache
+.fusebox/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# Yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Optional npm cache directory
+.npm
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Microbundle cache
+.rpt2_cache/
+.rts2_cache_cjs/
+.rts2_cache_es/
+.rts2_cache_umd/
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Compiled binary addons
+build/Release
+
+# Dependency directories
+jspm_packages/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# dotenv environment variable files
+.env
+.env.development.local
+.env.test.local
+.env.production.local
+.env.local
+
+# parcel-bundler cache
+.cache
+.parcel-cache
+
+# Next.js build output
+.next
+out
+
+# Nuxt.js build / generate output
+.nuxt
+dist
+
+# Gatsby files
+.cache/
+
+# vuepress build output
+.vuepress/dist
+
+# vuepress v2.x temp and cache directory
+.temp
+.cache
+
+# Docusaurus cache and generated files
+.docusaurus
+
+# Serverless directories
+.serverless/
+
+# FuseBox cache
+.fusebox/
+
+# DynamoDB Local files
+.dynamodb/
+
+# TernJS port file
+.tern-port
+
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
+
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Vite
+dist/
+dist-ssr/
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# OS generated files
+Thumbs.db
+
+# Python (if any Python projects are added)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Java (if any Java projects are added)
+*.class
+*.jar
+*.war
+*.ear
+target/
+.gradle/
+build/
+
+# Go (if any Go projects are added)
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.work
+
+# Rust (if any Rust projects are added)
+target/
+Cargo.lock
+
+# C/C++ (if any C/C++ projects are added)
+*.o
+*.obj
+*.exe
+*.out
+*.app
+*.so
+*.dylib
+*.dll
+
+# Ruby (if any Ruby projects are added)
+*.gem
+*.rbc
+/.config
+/coverage/
+/InstalledFiles
+/pkg/
+/spec/reports/
+/spec/examples.txt
+/test/tmp/
+/test/version_tmp/
+/tmp/
+.bundle/
+vendor/bundle
+lib/bundler/man/
+
+# PHP (if any PHP projects are added)
+/vendor/
+composer.phar
+composer.lock
+.env
+.env.backup
+.phpunit.result.cache
+Homestead.json
+Homestead.yaml
+npm-debug.log
+yarn-error.log
+
+# .NET (if any .NET projects are added)
+*.user
+*.userosscache
+*.suo
+*.userprefs
+.vs/
+.vscode/
+*.swp
+*.swo
+*_i.c
+*_p.c
+*_h.h
+*.ilk
+*.meta
+*.obj
+*.iobj
+*.pch
+*.pdb
+*.ipdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.tmp_proj
+*_wpftmp.csproj
+*.log
+*.vspscc
+*.vssscc
+.builds
+*.pidb
+*.svclog
+*.scc
+
+# Docker (if any Docker projects are added)
+.dockerignore
+Dockerfile
+docker-compose.yml
+docker-compose.override.yml
+
+# Terraform (if any infrastructure projects are added)
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Kubernetes (if any K8s projects are added)
+*.kubeconfig
+
+# AWS (if any AWS projects are added)
+.aws/
+aws-credentials
+
+# Local development
+.local/
+local/
